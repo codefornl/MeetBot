@@ -38,7 +38,7 @@ import time
 
 # Needed for testing with isinstance() for properly writing.
 #from items import Topic, Action
-import items
+from . import items
 
 # Data sanitizing for various output methods
 def html(text):
@@ -330,12 +330,12 @@ class _CSSmanager(object):
                 css_head = ('''<link rel="stylesheet" type="text/css" '''
                             '''href="%s">'''%cssfile)
                 return css_head
-        except Exception, exc:
+        except Exception as exc:
             if not self.M.config.safeMode:
                 raise
             import traceback
             traceback.print_exc()
-            print "(exception above ignored, continuing)"
+            print ("(exception above ignored, continuing)")
             try:
                 css_fname = os.path.join(os.path.dirname(__file__),
                                          'css-'+name+'-default.css')
@@ -471,9 +471,9 @@ class HTMLlog2(_BaseWriter, _CSSmanager):
                                 'nick':html(m.group('nick')),
                                 'line':html(m.group('line')),})
                 continue
-            print l
-            print m.groups()
-            print "**error**", l
+            print (l)
+            print (m.groups())
+            print ("**error**", l)
 
         css = self.getCSS(name='log')
         return html_template%{'pageTitle':"%s log"%html(M.channel),

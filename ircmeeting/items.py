@@ -33,7 +33,7 @@ import os
 import re
 import time
 
-import writers
+from . import writers
 #from writers import html, rst
 import itertools
 

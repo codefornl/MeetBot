@@ -69,12 +69,12 @@ class MeetBotTestCase(ChannelPluginTestCase):
                     groups = re.search(test[0], line).groups()
                     # Output pattern depends on input pattern
                     if isinstance(test[1], int):
-                        print groups[test[1]-1], reply
+                        print (groups[test[1]-1], reply)
                         assert re.search(re.escape(groups[test[1]-1]), reply),\
                               'line "%s" gives output "%s"'%(line, reply)
                     # Just match the given pattern.
                     else:
-                        print test[1], reply
+                        print (test[1], reply)
                         assert re.search(test[1], reply.decode('utf-8')), \
                                'line "%s" gives output "%s"'%(line, reply)
 

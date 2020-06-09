@@ -34,8 +34,9 @@ import os
 import re
 import stat
 
-import writers
-import items
+from . import writers
+from . import items
+from importlib import reload
 reload(writers)
 reload(items)
 
@@ -283,7 +284,7 @@ else:
             fname = os.path.join(dirname, "meetingLocalConfig.py")
             if os.access(fname, os.F_OK):
                 meetingLocalConfig = { }
-                execfile(fname, meetingLocalConfig)
+                exec(compile(open(fname, "rb").read(), fname, 'exec'), meetingLocalConfig)
                 LocalConfig = meetingLocalConfig["Config"]
                 break
     if LocalConfig is not None:
@@ -500,13 +501,13 @@ class Meeting(MeetingCommands, object):
         if hasattr(self, '_sendReply') and not self._lurk:
             self._sendReply(self.config.enc(x))
         else:
-            print "REPLY:", self.config.enc(x)
+            print ("REPLY:", self.config.enc(x))
     def topic(self, x):
         """Set the topic in the IRC channel."""
         if hasattr(self, '_setTopic') and not self._lurk:
             self._setTopic(self.config.enc(x))
         else:
-            print "TOPIC:", self.config.enc(x)
+            print ("TOPIC:", self.config.enc(x))
     def settopic(self):
         "The actual code to set the topic"
         if self._meetingTopic:
@@ -644,7 +645,7 @@ if __name__ == '__main__':
             filename = m.group(1)
         else:
             filename = os.path.splitext(fname)[0]
-        print 'Saving to:', filename
+        print ('Saving to:', filename)
         channel = '#'+os.path.basename(sys.argv[2]).split('.')[0]
 
         M = Meeting(channel=channel, owner=None,
@@ -668,5 +669,5 @@ if __name__ == '__main__':
                 M.addline(nick, "ACTION "+line, time_=time_)
         #M.save() # should be done by #endmeeting in the logs!
     else:
-        print 'Command "%s" not found.'%sys.argv[1]
+        print ('Command "%s" not found.'%sys.argv[1])
 

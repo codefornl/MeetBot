@@ -36,10 +36,12 @@ import supybot.callbacks as callbacks
 import supybot.ircmsgs as ircmsgs
 
 import time
-import ircmeeting.meeting as meeting
-import supybotconfig
+from . import ircmeeting
+from . import supybotconfig
+from importlib import reload
+
 # Because of the way we override names, we need to reload these in order.
-meeting = reload(meeting)
+meeting = reload(ircmeeting.meeting)
 supybotconfig = reload(supybotconfig)
 
 if supybotconfig.is_supybotconfig_enabled(meeting.Config):
@@ -142,8 +144,8 @@ class MeetBot(callbacks.Plugin):
                     M.addrawline(nick, payload)
         except:
             import traceback
-            print traceback.print_exc()
-            print "(above exception in outFilter, ignoring)"
+            print (traceback.print_exc())
+            print ("(above exception in outFilter, ignoring)")
         return msg
 
     # These are admin commands, for use by the bot owner when there
